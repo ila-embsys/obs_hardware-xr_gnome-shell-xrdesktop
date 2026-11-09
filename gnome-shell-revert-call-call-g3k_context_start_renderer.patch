@@ -1,0 +1,21 @@
+commit 6423b1d1f85db0100defcd8f4ee8877d92488969
+Author: ila <ila.embsys@gmail.com>
+Date:   Thu Sep 28 06:22:27 2023 +0400
+
+    Revert "vr-mirror: call g3k_context_start_renderer"
+    
+    This reverts commit 22e26f6d3ef0b083afd05efb1b18741c8503b1bb.
+
+diff --git a/src/shell-vr-mirror.c b/src/shell-vr-mirror.c
+index 7db736562..518127c21 100644
+--- a/src/shell-vr-mirror.c
++++ b/src/shell-vr-mirror.c
+@@ -1459,8 +1459,6 @@ shell_vr_mirror_initialize (ShellVRMirror *self)
+ 
+ 
+   _connect_signals (self);
+-
+-  g3k_context_start_renderer (self->g3k);
+ }
+ 
+ /*

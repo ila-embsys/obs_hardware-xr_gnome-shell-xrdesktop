@@ -1,0 +1,99 @@
+commit 3cbfbae6627e068a6134da7a99b0e4deaa7b49b3
+Author: ila <ila.embsys@gmail.com>
+Date:   Thu Sep 28 06:20:14 2023 +0400
+
+    vr-mirror: Change MetaRectangle to MtkRectangle
+
+diff --git a/src/shell-vr-mirror.c b/src/shell-vr-mirror.c
+index 6c5dc8a32..7db736562 100644
+--- a/src/shell-vr-mirror.c
++++ b/src/shell-vr-mirror.c
+@@ -823,7 +823,7 @@ static graphene_point_t
+ _window_to_desktop_coords (MetaWindow       *meta_win,
+                            graphene_point_t *window_pixels)
+  {
+-  MetaRectangle window_rect;
++  MtkRectangle window_rect;
+   meta_window_get_buffer_rect (meta_win, &window_rect);
+ 
+   graphene_point_t desktop_coords = {
+@@ -1073,7 +1073,7 @@ _upload_gl_external_memory (ShellVRMirror     *self,
+                             GulkanContext      *gulkan,
+                             XrdWindow         *xrd_win,
+                             MetaShapedTexture *mst,
+-                            MetaRectangle     *rect)
++                            MtkRectangle     *rect)
+ {
+   CoglTexture *cogl_texture = meta_shaped_texture_get_texture (mst);
+ 
+@@ -1137,7 +1137,7 @@ _upload_raw_cairo (ShellVRMirror     *self,
+                    GulkanContext      *gulkan,
+                    XrdWindow         *xrd_win,
+                    MetaShapedTexture *mst,
+-                   MetaRectangle     *rect)
++                   MtkRectangle     *rect)
+ {
+   cairo_rectangle_int_t cairo_rect = {
+     .x = 0,
+@@ -1207,7 +1207,7 @@ _upload_window (ShellVRMirror *self, XrdWindow *xrd_win)
+   MetaWindowActor* actor = shell_win->meta_window_actor;
+ 
+   MetaWindow *meta_win = _get_validated_window (actor);
+-  MetaRectangle rect;
++  MtkRectangle rect;
+   meta_window_get_buffer_rect (meta_win, &rect);
+ 
+   /* skip upload of small buffers */
+@@ -1279,7 +1279,7 @@ _apply_desktop_position (MetaWindow *meta_win,
+   int screen_w, screen_h;
+   meta_display_get_size (display, &screen_w, &screen_h);
+ 
+-  MetaRectangle rect;
++  MtkRectangle rect;
+   meta_window_get_buffer_rect (meta_win, &rect);
+ 
+   float x =            rect.x - screen_w / 2.0f + rect.width  / 2.0f;
+@@ -1471,10 +1471,10 @@ shell_vr_mirror_initialize (ShellVRMirror *self)
+ static void
+ _get_offset (MetaWindow *parent, MetaWindow *child, graphene_point_t *offset)
+ {
+-  MetaRectangle parent_rect;
++  MtkRectangle parent_rect;
+   meta_window_get_buffer_rect (parent, &parent_rect);
+ 
+-  MetaRectangle child_rect;
++  MtkRectangle child_rect;
+   meta_window_get_buffer_rect (child, &child_rect);
+ 
+   int parent_center_x = parent_rect.x + parent_rect.width / 2;
+@@ -1569,7 +1569,7 @@ shell_vr_mirror_map_actor (ShellVRMirror   *self,
+   if (_is_excluded_from_mirroring (meta_win))
+     return FALSE;
+ 
+-  MetaRectangle rect;
++  MtkRectangle rect;
+   meta_window_get_buffer_rect (meta_win, &rect);
+ 
+   gboolean is_child = _is_child_window (meta_win);
+@@ -1698,7 +1698,7 @@ shell_vr_mirror_actor_size_changed (ShellVRMirror   *self,
+ 
+   MetaWindow *meta_win = _get_validated_window (actor);
+ 
+-  MetaRectangle rect;
++  MtkRectangle rect;
+   meta_window_get_buffer_rect (meta_win, &rect);
+   g_print ("Window Size Changed: %s: [%d,%d] %dx%d\n",
+            meta_window_get_title (meta_win),
+diff --git a/src/shell-wm.c b/src/shell-wm.c
+index d7eed62b3..219f33920 100644
+--- a/src/shell-wm.c
++++ b/src/shell-wm.c
+@@ -284,7 +284,7 @@ shell_wm_completed_map (ShellWM         *wm,
+            meta_window_get_wm_class (window),
+            meta_window_get_title (window));
+ 
+-  MetaRectangle rect;
++  MtkRectangle rect;
+   meta_window_get_buffer_rect (window, &rect);
+   g_print ("[%d,%d] %dx%d\n", rect.x, rect.y, rect.width, rect.height);
+ 
